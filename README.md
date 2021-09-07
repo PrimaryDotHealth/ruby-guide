@@ -61,7 +61,7 @@ class CreateTodoWithItem
   promises :todo, :first_item
   executed do |context|
     context.todo = Todo.new(context.todo_params)
-    context.first_item = Item.new(todo: context.todo, body: context.first_item_body, active: true)
+    context.item = Item.new(todo: context.todo, body: context.first_item_body, active: true)
     if !context.todo.save
       context.fail!("Failed to save")
     end
@@ -145,7 +145,24 @@ end
 
 ```
 
-Why is this bad? Because `title_with_items_count` isn't *really* a model attribute, and this kind of code tends to blow up a file. Count the lines in user.rb if you don't believe me!
+Why is this bad? Because `title_with_items_count` isn't *really* a model attribute, and this kind of code tends to blow up a file. Count the lines in user.rb if you don't believe me! It is also a presentation concern, not a persistence issue. If some other view want to display this slightly differently, you would then add add a second method to the model, and so on. 
+
+Another common practice is to put this in a Helper. 
+
+```ruby
+# Bad
+# app/helpers/todo_helper.rb
+module TodoHelper
+  def title_with_items_count(todo
+    "#{todo.title} (#{todo.items.count})"
+  end 
+end
+```
+
+However, this is also bad because 
+a) it's hard to know where `title_with_items_count` is defined
+b) Someone else could define another helper with the same name in some other Helper module and it would be hard to debug
+c) All helpers are mixed into every view, increasing memory pressure
 
 
 ### Decorators (Draper) (new!)
@@ -218,17 +235,18 @@ end
 ```
 Why is this bad? Because it becomes harder and harder to test this `Todo` model without a bunch of stuff happening.
 
-### Modules (probably don't make these)
-Modules are *really bad*. They kinda just dump code into a controller, and it's really hard to figure out where its defined. They shoudl only be used for really stateless, generic formatting stuff. For example:
+### Modules (a.k.a. View Helpers) (probably don't make these)
+Helpers are *really bad*. They kinda just dump code into a view, and it's really hard to figure out where its defined. They shoudl only be used for really stateless, generic formatting stuff. For example:
 ```ruby
-class TodoModule
+# app/helpers/todo_helper.rb
+module TodoHelper
   def format_datetime(datetime)
     datetime.strftime("%Y:%m:%d, %H:%M:%S") # Always format it like year, month, day hour, minute second
   end
 end
 ```
 
-If you are thinking of making a module, here are a few questions:
+If you are thinking of making a helper module, here are a few questions:
 1. Is it reading from instance variables? Please just pass them in as params
 ```ruby
 # Bad
@@ -245,9 +263,10 @@ end
 
 ```ruby
 # Bad
-
-def article_titles_with_id(articles)
-  articles.map { |a| "#{a.id} #{a.title}" }
+module ArticlesHelper
+  def article_titles_with_id(articles)
+    articles.map { |a| "#{a.id} #{a.title}" }
+  end
 end
 
 # Good
