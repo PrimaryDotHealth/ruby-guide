@@ -211,7 +211,7 @@ end
 class Todo < ApplicationModel
   after_save :send_email
 
-  def validate_title_is_uppercase
+  def send_email
     TodoMailer.send(self)
   end
 end
@@ -243,4 +243,22 @@ end
 ```
 2. Is it specific to a view? Just put them into view models!
 
+```ruby
+# Bad
+
+def article_titles_with_id(articles)
+  articles.map { |a| "#{a.id} #{a.title}" }
+end
+
+# Good
+class ArticlesIndexViewModel
+  def initialize(articles)
+    @articles = articles
+  end
+  
+  def article_titles_with_id
+    @articles.map { |a| "#{a.id} #{a.title}" }
+  end
+end
+```
 
