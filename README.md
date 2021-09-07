@@ -3,6 +3,7 @@
 We'll be mocking up a todo app for our example.
 
 **Models**:
+
 `Todo(id: int, title: string, owner_email: string)`
 
 `Item(id: int, todo_id: int, body: string, active: boolean)`
@@ -179,7 +180,7 @@ end
 
 ### Model Hooks
 Most of the rails community has turned against using hooks, you probably shouldn't use them except as validators
-```
+```ruby
 class Todo < ApplicationModel
   
   validate :validate_title_is_uppercase
@@ -205,7 +206,7 @@ Why is this bad? Because it becomes harder and harder to test this `Todo` model 
 
 ### Modules (probably don't make these)
 Modules are *really bad*. They kinda just dump code into a controller, and it's really hard to figure out where its defined. They shoudl only be used for really stateless, generic formatting stuff. For example:
-```
+```ruby
 class TodoModule
   def format_datetime(datetime)
     datetime.strftime("%Y:%m:%d, %H:%M:%S) # Always format it like year, month, day hour, minute second
@@ -215,7 +216,7 @@ end
 
 If you are thinking of making a module, here are a few questions:
 1. Is it reading from instance variables? Please just pass them in as params
-```
+```ruby
 # Bad
 def todos_count_minus_one
   @todos.count - 1
