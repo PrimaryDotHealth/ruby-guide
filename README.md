@@ -224,7 +224,7 @@ Modules are *really bad*. They kinda just dump code into a controller, and it's 
 ```ruby
 class TodoModule
   def format_datetime(datetime)
-    datetime.strftime("%Y:%m:%d, %H:%M:%S) # Always format it like year, month, day hour, minute second
+    datetime.strftime("%Y:%m:%d, %H:%M:%S") # Always format it like year, month, day hour, minute second
   end
 end
 ```
