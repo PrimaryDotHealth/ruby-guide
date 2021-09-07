@@ -61,7 +61,7 @@ class CreateTodoWithItem
   promises :todo, :first_item
   executed do |context|
     context.todo = Todo.new(context.todo_params)
-    context.item = Item.new(todo: context.todo, body: context.first_item_body, active: true)
+    context.first_item = Item.new(todo: context.todo, body: context.first_item_body, active: true)
     if !context.todo.save
       context.fail!("Failed to save")
     end
