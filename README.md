@@ -27,6 +27,7 @@ Item(3, 1, "Go for a run", false)
 ## Where to put code?
 
 ### Services
+
 Services wrap business logic that is complex. In this example, you have a `all_valid?` and `run!` method, that is dependent on an instance variable `@todo_data`.
 
 ```ruby
@@ -50,8 +51,7 @@ end
 ### Actions (Light service)
 *See official docs [here](https://github.com/adomokos/light-service)*
 
-
-Actions wrap business logic that is straight-forward. In this example, we just create a todo with an item that sends an email
+Actions wrap business logic that is straight-forward. In this example, we just create a todo with an item that sends an email.
 
 ```ruby
 class CreateTodoWithItem
@@ -85,7 +85,8 @@ class CreateTodo
 ```
 
 ### Models
-Model code should only deal with validating data and loading data. It should not try to do business logic-y stuff
+Model code should only deal with validating data and loading data. It should not try to do business logic-y stuff.
+
 ```ruby
 class Todo < ApplicationRecord
   has_many :items
@@ -114,8 +115,6 @@ end
 ```
 
 ### View Models
-```
-```
 View Models are a way to group view specific helpers.
 
 For example, maybe we want to render the title of our todo like: "{title} ({number_of_active_items})"
