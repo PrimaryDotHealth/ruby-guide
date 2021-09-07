@@ -1,5 +1,9 @@
 # Ruby Guide
 
+## Stateless vs stateful functions
+
+## Side effects
+
 ## When to Use Actions vs Services vs Models vs Modules
 
 ## Testing Service Objects
