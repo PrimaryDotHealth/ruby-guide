@@ -8,6 +8,15 @@ We'll be mocking up a todo app for our example.
 
 `Item(id: int, todo_id: int, body: string, active: boolean)`
 
+For example, the data could be something like:
+
+```
+Todo(1, "Weekend Todo List", "name@example.com")
+Item(1, 1, "Do laundry", true)
+Item(2, 1, "Walk the dog", true)
+Item(3, 1, "Go for a run", false)
+```
+
 **Business Logic**:
 *Business logic is just rules of how your app behaves. Here are some we will require from our app:*
 
