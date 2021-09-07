@@ -48,6 +48,9 @@ end
 ```
 
 ### Actions (Light service)
+*See official docs [here](https://github.com/adomokos/light-service)*
+
+
 Actions wrap business logic that is straight-forward. In this example, we just create a todo with an item that sends an email
 
 ```ruby
@@ -147,6 +150,9 @@ Why is this bad? Because `title_with_items_count` isn't *really* a model attribu
 
 
 ### Decorators (Draper) (new!)
+
+*See official docs [here](https://github.com/drapergem/draper)*
+
 Draper will be used to decorate model with attributes that aren't really useful for business logic, but are useful for views.
 
 For example, maybe I want something like `item.active_string` which returns either `"Active"` or `"Inactive"`
