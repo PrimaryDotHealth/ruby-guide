@@ -145,7 +145,7 @@ end
 
 ```
 
-Why is this bad? Because `title_with_items_count` isn't *really* a model attribute, and this kind of code tends to blow up a file. Count the lines in user.rb if you don't believe me! It is also a presentation concern, not a persistence issue. If some other view want to display this slightly differently, you would then add add a second method to the model, and so on. 
+Why is this bad? Because `title_with_items_count` isn't *really* a model attribute, and this kind of code tends to blow up a file. Count the lines in user.rb if you don't believe me! It is also a presentation concern, not a persistence issue. If some other view wants to display this slightly differently, you would then add add a second method to the model, and so on. 
 
 Another common practice is to put this in a Helper. 
 
@@ -153,7 +153,7 @@ Another common practice is to put this in a Helper.
 # Bad
 # app/helpers/todo_helper.rb
 module TodoHelper
-  def title_with_items_count(todo
+  def title_with_items_count(todo)
     "#{todo.title} (#{todo.items.count})"
   end 
 end
