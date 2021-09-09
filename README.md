@@ -48,6 +48,8 @@ class TodosImporter
 end
 ```
 
+Services is a wrong name for a folder that handle business actions, I think it is ok if a service class connects to an external service.
+
 ### Actions (Light service)
 *See official docs [here](https://github.com/adomokos/light-service)*
 
@@ -84,6 +86,9 @@ class CreateTodo
   end
 ```
 
+This is a personal opinion but I don't like Light service gem, one of the problems that I see is that everything is handled in a class method and working with class methods is hard, specially when the action grows a little bit.
+So if we use Services or business actions (call it whatever you want) I think there is no need for this.
+
 ### Models
 Model code should only deal with validating data and loading data. It should not try to do business logic-y stuff.
 
@@ -113,6 +118,8 @@ class Todo < ApplicationRecord
   end
 end
 ```
+
+I agree completely about it. We shouldn't put business logic here, neither presentation logic. A model only connects to the database, of course you can use validations but usually data validation should be handled in the request context and not in the model.
 
 ### View Models
 View Models are a way to group view specific helpers.
@@ -149,6 +156,8 @@ Why is this bad? Because `title_with_items_count` isn't *really* a model attribu
 
 Another common practice is to put this in a Helper. 
 
+View models or presenters are fine to hold the presentation logic, this help us to create tiny controller instead of putting a lot of code there.
+
 ```ruby
 # Bad
 # app/helpers/todo_helper.rb
@@ -164,6 +173,7 @@ a) it's hard to know where `title_with_items_count` is defined
 b) Someone else could define another helper with the same name in some other Helper module and it would be hard to debug
 c) All helpers are mixed into every view, increasing memory pressure
 
+Helpers are fine if something is used acroos multiple views, e.g. rails helpers to manipulate strings, url helpers, and so on. But that's all, put business logic there is a bad decision because helpers aren't namespaced, all helpers put in all modules are available in all views and you could end up with method names very large.
 
 ### Decorators (Draper) (new!)
 
@@ -209,6 +219,8 @@ class Todo < ApplicationRecord
 end
 ```
 
+I wouldn't use drapper if we use view models, there is no need to add a new gem when you can handle presentation logic with presenter or view models.
+
 ### Model Hooks
 Most of the rails community has turned against using hooks, you probably shouldn't use them except as validators
 ```ruby
@@ -234,6 +246,10 @@ class Todo < ApplicationModel
 end
 ```
 Why is this bad? Because it becomes harder and harder to test this `Todo` model without a bunch of stuff happening.
+
+
+Never use callbacks in a model unless it is strictly needed, e.g. a gem that index the model in ElasticSearch (like Chewy). The problem is that you have undesired behaviours that could not control and refactor code is very complicated.
+
 
 ### Modules (a.k.a. View Helpers) (probably don't make these)
 Helpers are *really bad*. They kinda just dump code into a view, and it's really hard to figure out where its defined. They shoudl only be used for really stateless, generic formatting stuff. For example:
